@@ -165,7 +165,7 @@ void STM32_Data_GeneratorDlg::WxButton_SaveClick(wxCommandEvent& event)
         fprintf(fp,"symbol=%s\n",((std::string)symbol.c_str()).c_str());
         fprintf(fp,"symbol_start=%08X\n",symbol_start);
         fprintf(fp,"symbol_length=%u\n",symbol_length);
-        fprintf(fp,"data=data.Dat");
+      //  fprintf(fp,"data=data.Dat");
         
         
         fclose(fp);
@@ -184,9 +184,30 @@ void STM32_Data_GeneratorDlg::WxButton_SaveClick(wxCommandEvent& event)
                 }
                 
                remove("data/data.hex");//删除hex文件 
+               
+               //保存文件位置 
+               FILE *fp=fopen("data/config.cfg","a");
+                if(fp == NULL)
+                    {
+                       ErrorMessage("程序安装目录可能不可写!\n","警告");
+                       return;   
+                    } 
+                fprintf(fp,"data=data.Dat");
+                fclose(fp);
             }
             else
             {
+                //保存文件位置 
+                 FILE *fp=fopen("data/config.cfg","a");
+                if(fp == NULL)
+                    {
+                       ErrorMessage("程序安装目录可能不可写!\n","警告");
+                       return;   
+                    } 
+                fprintf(fp,"data=data.hex");
+                fclose(fp);
+                
+                remove("data/data.Dat");//删除Dat文件
                 ErrorMessage("未加密，直接使用hex文件！","说明");
             }
              
