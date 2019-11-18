@@ -1,0 +1,52 @@
+# Project: STM32_Data_Programer
+# Compiler: Default GCC compiler
+# Compiler Type: MingW 3
+# Makefile created by wxDev-C++ IDE 7.4.2.569 on 18-11-19 16:32
+
+WXLIBNAME = wxmsw29u
+CPP       = g++.exe
+CC        = gcc.exe
+WINDRES   = "windres.exe"
+OBJ       = Objects/MingW/STM32_Data_ProgramerApp.o Objects/MingW/STM32_Data_ProgramerDlg.o Objects/MingW/FilePassWord.o Objects/MingW/aes.o Objects/MingW/STM32_Data_Programer_private.res
+LINKOBJ   = "Objects/MingW/STM32_Data_ProgramerApp.o" "Objects/MingW/STM32_Data_ProgramerDlg.o" "Objects/MingW/FilePassWord.o" "Objects/MingW/aes.o" Objects/MingW/STM32_Data_Programer_private.res
+LIBS      = -L"D:/Dev-Cpp/lib/wx/gcc_lib" -L"D:/Dev-Cpp/lib" -L"D:/Dev-Cpp/MinGW32/lib" -L"dlfcn" -mwindows -l$(WXLIBNAME) -l$(WXLIBNAME)_gl -lwxscintilla -lwxtiff -lwxjpeg -lwxpng -lwxzlib -lwxregexu -lwxexpat -lkernel32 -luser32 -lgdi32 -lcomdlg32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lole32 -loleaut32 -luuid -lrpcrt4 -ladvapi32 -lwsock32 -lodbc32 -lopengl32 -ldl  
+INCS      = -I"D:/Dev-Cpp/MinGW32/include" -I"dlfcn" -I"AES"
+CXXINCS   = -I"D:/Dev-Cpp/MinGW32/include" -I"D:/Dev-Cpp/" -I"D:/Dev-Cpp/include/common" -I"dlfcn" -I"AES"
+RCINCS    = --include-dir "D:/Dev-Cpp/include/common"
+BIN       = Output/MingW/STM32_Data_Programer.exe
+DEFINES   = -D__WXMSW__ -D__GNUWIN32__ -D_UNICODE
+CXXFLAGS  = $(CXXINCS) $(DEFINES)  
+CFLAGS    = $(INCS) $(DEFINES)  
+GPROF     = gprof.exe
+ifeq ($(OS),Windows_NT)
+   RM = del /Q
+   FixPath = $(subst /,\,$1)
+else
+   RM = rm -f
+   FixPath = $1
+endif
+LINK      = g++.exe
+
+.PHONY: all all-before all-after clean clean-custom
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	$(RM) $(call FixPath,$(LINKOBJ)) "$(call FixPath,$(BIN))"
+
+$(BIN): $(OBJ)
+	$(LINK) $(LINKOBJ) -o "$(BIN)" $(LIBS) 
+
+Objects/MingW/STM32_Data_ProgramerApp.o: $(GLOBALDEPS) STM32_Data_ProgramerApp.cpp STM32_Data_ProgramerApp.h STM32_Data_ProgramerDlg.h
+	$(CPP) -c STM32_Data_ProgramerApp.cpp -o Objects/MingW/STM32_Data_ProgramerApp.o $(CXXFLAGS)
+
+Objects/MingW/STM32_Data_ProgramerDlg.o: $(GLOBALDEPS) STM32_Data_ProgramerDlg.cpp STM32_Data_ProgramerDlg.h FilePassWord.h
+	$(CPP) -c STM32_Data_ProgramerDlg.cpp -o Objects/MingW/STM32_Data_ProgramerDlg.o $(CXXFLAGS)
+
+Objects/MingW/FilePassWord.o: $(GLOBALDEPS) FilePassWord.cpp FilePassWord.h
+	$(CPP) -c FilePassWord.cpp -o Objects/MingW/FilePassWord.o $(CXXFLAGS)
+
+Objects/MingW/aes.o: $(GLOBALDEPS) AES/aes.c AES/aes.h
+	$(CPP) -c AES/aes.c -o Objects/MingW/aes.o $(CXXFLAGS)
+
+Objects/MingW/STM32_Data_Programer_private.res: Objects/MingW/STM32_Data_Programer_private.rc STM32_Data_ProgramerApp.rc 
+	$(WINDRES) --input-format=rc -o Objects/MingW/STM32_Data_Programer_private.res $(RCINCS) Objects/MingW/STM32_~1.RC -O coff

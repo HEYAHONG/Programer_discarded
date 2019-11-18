@@ -132,7 +132,8 @@ void FileCrypto::WxButton1Click(wxCommandEvent& event)
 	uint8_t *aes_w=aes_init(sizeof(aes_key));
 	{
         wxString key=WxEdit1->GetValue();
-        memcpy(aes_key,((std::string)key.c_str()).c_str(),32);
+        memset(aes_key,0,sizeof(aes_key)); 
+        memcpy(aes_key,((std::string)key.c_str()).c_str(),key.Len());
         aes_key_expansion(aes_key, aes_w);
     }
 	{//写入文件头
