@@ -42,7 +42,7 @@
 
 ////Dialog Style Start
 #undef STM32_Data_ProgramerDlg_STYLE
-#define STM32_Data_ProgramerDlg_STYLE wxCAPTION | wxSYSTEM_MENU | wxDIALOG_NO_PARENT | wxMINIMIZE_BOX | wxCLOSE_BOX
+#define STM32_Data_ProgramerDlg_STYLE wxCAPTION | wxSYSTEM_MENU | wxDIALOG_NO_PARENT | wxDIALOG_EX_CONTEXTHELP | wxMINIMIZE_BOX | wxCLOSE_BOX
 ////Dialog Style End
 
 class STM32_Data_ProgramerDlg : public wxDialog

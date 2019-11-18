@@ -140,7 +140,8 @@ void STM32_Data_ProgramerDlg::Data_Init()
                 if(dlg.ShowModal()!= wxID_OK)
                     {
                         Info->AppendText("警告:密码验证出现错误,可能需要重新设置数据目录\n");
-                    };                
+                    }; 
+                dlg.Destroy();               
             } 
     }
     {//测试环境变量

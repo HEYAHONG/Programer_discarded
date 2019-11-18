@@ -39,6 +39,7 @@ void STM32_Data_ProgramerDlgApp::SetEnvironment()
 {
 char path[PATH_MAX+1];
 strcpy(path,argv[0]);
+memset(path,0,sizeof(path));
 
 //除去文件名，得到运行程序的路径 
 for(size_t i=0;i<=strlen(path);i++)

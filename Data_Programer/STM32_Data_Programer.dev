@@ -1,7 +1,7 @@
 [Project]
 FileName=STM32_Data_Programer.dev
 Name=STM32_Data_Programer
-UnitCount=9
+UnitCount=12
 PchHead=-1
 PchSource=-1
 Ver=3
@@ -189,6 +189,15 @@ CompileCpp=1
 Folder=STM32_Data_Programer
 Compile=1
 Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit12]
+FileName=UAC.manifest
+Folder=STM32_Data_Programer
+Compile=0
+Link=0
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
