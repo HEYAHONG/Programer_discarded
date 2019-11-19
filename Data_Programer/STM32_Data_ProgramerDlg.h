@@ -33,10 +33,15 @@
 #include "windows.h"
 #endif
 
+#include "aes.h"
+ 
 //Do not add custom headers between 
 //Header Include Start and Header Include End.
 //wxDev-C++ designer will remove them. Add custom headers after the block.
 ////Header Include Start
+#include <wx/stattext.h>
+#include <wx/timer.h>
+#include <wx/button.h>
 #include <wx/textctrl.h>
 ////Header Include End
 
@@ -55,12 +60,24 @@ class STM32_Data_ProgramerDlg : public wxDialog
 		virtual ~STM32_Data_ProgramerDlg();
 		wxString DataDir;
 		void     Data_Init();
+	    uint8_t *hex_data; 
+		void STM32_Data_ProgramerDlgEnterWindow(wxMouseEvent& event);
+		void STM32_Data_ProgramerDlgInitDialog(wxInitDialogEvent& event);
+		void WxButton1Click(wxCommandEvent& event);
+		void STM32_Data_ProgramerDlgSetFocus(wxFocusEvent& event);
+		void STM32_Data_ProgramerDlgActivate(wxActivateEvent& event);
+		void WxTimer1Timer(wxTimerEvent& event);
+		void WxEdit1Updated(wxCommandEvent& event);
 	
 	private:
 		//Do not add custom control declarations between 
 		//GUI Control Declaration Start and GUI Control Declaration End.
 		//wxDev-C++ will remove them. Add custom code after the block.
 		////GUI Control Declaration Start
+		wxTextCtrl *WxEdit1;
+		wxStaticText *WxStaticText1;
+		wxTimer *WxTimer1;
+		wxButton *WxButton1;
 		wxTextCtrl *Info;
 		////GUI Control Declaration End
 		
@@ -72,6 +89,10 @@ class STM32_Data_ProgramerDlg : public wxDialog
 		enum
 		{
 			////GUI Enum Control ID Start
+			ID_WXEDIT1 = 1005,
+			ID_WXSTATICTEXT1 = 1004,
+			ID_WXTIMER1 = 1003,
+			ID_WXBUTTON1 = 1002,
 			ID_WXEDIT1_Info = 1001,
 			////GUI Enum Control ID End
 			ID_DUMMY_VALUE_ //don't remove this value unless you have other enum values

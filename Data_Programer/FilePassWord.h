@@ -44,7 +44,7 @@ struct
 
 ////Dialog Style Start
 #undef FilePassWord_STYLE
-#define FilePassWord_STYLE wxCAPTION | wxCLOSE_BOX
+#define FilePassWord_STYLE wxCAPTION
 ////Dialog Style End
 
 class FilePassWord : public wxDialog
@@ -57,12 +57,15 @@ class FilePassWord : public wxDialog
 		virtual ~FilePassWord();
 		void WxEdit1Updated(wxCommandEvent& event);
 		void WxButton1Click(wxCommandEvent& event);
+		void WxButton2Click(wxCommandEvent& event);
+		void WxButton2Click0(wxCommandEvent& event);
 	
 	private:
 		//Do not add custom control declarations between 
 		//GUI Control Declaration Start and GUI Control Declaration End.
 		//wxDev-C++ will remove them. Add custom code after the block.
 		////GUI Control Declaration Start
+		wxButton *WxButton2;
 		wxTextCtrl *WxEdit2;
 		wxButton *WxButton1;
 		wxTextCtrl *WxEdit1;
@@ -76,6 +79,7 @@ class FilePassWord : public wxDialog
 		enum
 		{
 			////GUI Enum Control ID Start
+			ID_WXBUTTON2 = 1004,
 			ID_WXEDIT2 = 1003,
 			ID_WXBUTTON1 = 1002,
 			ID_WXEDIT1 = 1001,

@@ -154,9 +154,10 @@ void FileCrypto::WxButton1Click(wxCommandEvent& event)
 	    memset(aes_in_buff,0,32);   
         while(!feof(hex))
         {
-            fread(aes_in_buff,32,1,hex);//读取hex文件 
+            fread(aes_in_buff,1,32,hex);//读取hex文件 
             
             //加密并写入文件 
+            aes_key_expansion(aes_key, aes_w);
             aes_cipher(aes_in_buff,aes_out_buff,aes_w);
             fwrite(aes_out_buff,32,1,dat); 
             memset(aes_in_buff,0,32);

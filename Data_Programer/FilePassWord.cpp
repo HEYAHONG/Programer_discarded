@@ -26,6 +26,7 @@ BEGIN_EVENT_TABLE(FilePassWord,wxDialog)
 	////Manual Code End
 	
 	EVT_CLOSE(FilePassWord::OnClose)
+	EVT_BUTTON(ID_WXBUTTON2,FilePassWord::WxButton2Click0)
 	EVT_BUTTON(ID_WXBUTTON1,FilePassWord::WxButton1Click)
 	
 	EVT_TEXT(ID_WXEDIT1,FilePassWord::WxEdit1Updated)
@@ -50,7 +51,9 @@ void FilePassWord::CreateGUIControls()
 	//Add the custom code before or after the blocks
 	////GUI Items Creation Start
 
-	WxEdit2 = new wxTextCtrl(this, ID_WXEDIT2, _("在上方输入密码,点击确定。"), wxPoint(4, 34), wxSize(322, 41), wxTE_READONLY | wxTE_LEFT, wxDefaultValidator, _("WxEdit2"));
+	WxButton2 = new wxButton(this, ID_WXBUTTON2, _("取消"), wxPoint(251, 31), wxSize(72, 26), 0, wxDefaultValidator, _("WxButton2"));
+
+	WxEdit2 = new wxTextCtrl(this, ID_WXEDIT2, _("在上方输入密码,点击确定。"), wxPoint(3, 34), wxSize(244, 26), wxTE_READONLY | wxTE_LEFT, wxDefaultValidator, _("WxEdit2"));
 
 	WxButton1 = new wxButton(this, ID_WXBUTTON1, _("确定"), wxPoint(251, 1), wxSize(72, 26), 0, wxDefaultValidator, _("WxButton1"));
 
@@ -58,7 +61,7 @@ void FilePassWord::CreateGUIControls()
 
 	SetTitle(_("FilePassWord"));
 	SetIcon(wxNullIcon);
-	SetSize(8,8,343,113);
+	SetSize(8,8,343,101);
 	Center();
 	
 	////GUI Items Creation End
@@ -132,7 +135,7 @@ void FilePassWord::WxButton1Click(wxCommandEvent& event)
                 {
                    aes_inv_cipher(aes_in,aes_out,w);
                    memcpy(&fheader,aes_out,32); 
-                   if(fheader.data.flag != 0x12345678 || fheader.data.dat_size != fsize )
+                   if(fheader.data.flag != 0x12345678 || fheader.data.dat_size != fsize || fheader.data.hex_data_size!=(fsize-32))
                    {
                     wxMessageDialog dlg(this,"密码错误!\n","警告");
                     dlg.ShowModal();
@@ -163,4 +166,19 @@ void FilePassWord::WxButton1Click(wxCommandEvent& event)
         fclose(fp); 
     }
 	EndModal(wxID_OK);
+}
+void FilePassWord::WxButton2Click(wxCommandEvent& event)
+{
+    EndModal(wxID_CANCEL); 
+    
+} 
+
+
+/*
+ * WxButton2Click0
+ */
+void FilePassWord::WxButton2Click0(wxCommandEvent& event)
+{
+	// insert your code here
+	WxButton2Click(event);
 }
