@@ -21,7 +21,7 @@
 #else
 	#include <wx/wxprec.h>
 #endif
-#include "aes.h"
+#include "nettle/aes.h"
 typedef union
 {
 uint8_t buff[32];

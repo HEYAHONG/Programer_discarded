@@ -1,22 +1,22 @@
 # Project: STM32_Data_Generator
 # Compiler: Default GCC compiler
 # Compiler Type: MingW 3
-# Makefile created by wxDev-C++ IDE 7.4.2.569 on 19-11-19 16:05
+# Makefile created by wxDev-C++ IDE 7.4.2.569 on 20-11-19 09:36
 
 WXLIBNAME = wxmsw29u
 CPP       = g++.exe
 CC        = gcc.exe
 WINDRES   = "windres.exe"
-OBJ       = Objects/MingW/STM32_Data_GeneratorApp.o Objects/MingW/STM32_Data_GeneratorDlg.o Objects/MingW/aes.o Objects/MingW/Address_Select.o Objects/MingW/Address_manualDlg.o Objects/MingW/FileCrypto.o Objects/MingW/STM32_Data_Generator_private.res
-LINKOBJ   = "Objects/MingW/STM32_Data_GeneratorApp.o" "Objects/MingW/STM32_Data_GeneratorDlg.o" "Objects/MingW/aes.o" "Objects/MingW/Address_Select.o" "Objects/MingW/Address_manualDlg.o" "Objects/MingW/FileCrypto.o" Objects/MingW/STM32_Data_Generator_private.res
-LIBS      = -L"D:/Dev-Cpp/lib/wx/gcc_lib" -L"D:/Dev-Cpp/lib" -L"D:/Dev-Cpp/MinGW32/lib" -mwindows -l$(WXLIBNAME) -l$(WXLIBNAME)_gl -lwxscintilla -lwxtiff -lwxjpeg -lwxpng -lwxzlib -lwxregexu -lwxexpat -lkernel32 -luser32 -lgdi32 -lcomdlg32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lole32 -loleaut32 -luuid -lrpcrt4 -ladvapi32 -lwsock32 -lodbc32 -lopengl32 libbfd/libbfd.dll.a  
-INCS      = -I"D:/Dev-Cpp/MinGW32/include" -I"libbfd"
-CXXINCS   = -I"D:/Dev-Cpp/MinGW32/include" -I"D:/Dev-Cpp/" -I"D:/Dev-Cpp/include/common" -I"libbfd"
+OBJ       = Objects/MingW/STM32_Data_GeneratorApp.o Objects/MingW/STM32_Data_GeneratorDlg.o Objects/MingW/Address_Select.o Objects/MingW/Address_manualDlg.o Objects/MingW/FileCrypto.o Objects/MingW/STM32_Data_Generator_private.res
+LINKOBJ   = "Objects/MingW/STM32_Data_GeneratorApp.o" "Objects/MingW/STM32_Data_GeneratorDlg.o" "Objects/MingW/Address_Select.o" "Objects/MingW/Address_manualDlg.o" "Objects/MingW/FileCrypto.o" Objects/MingW/STM32_Data_Generator_private.res
+LIBS      = -L"D:/Dev-Cpp/lib/wx/gcc_lib" -L"D:/Dev-Cpp/lib" -L"D:/Dev-Cpp/MinGW32/lib" -L"nettle/lib" -mwindows -l$(WXLIBNAME) -l$(WXLIBNAME)_gl -lwxscintilla -lwxtiff -lwxjpeg -lwxpng -lwxzlib -lwxregexu -lwxexpat -lkernel32 -luser32 -lgdi32 -lcomdlg32 -lwinspool -lwinmm -lshell32 -lcomctl32 -lole32 -loleaut32 -luuid -lrpcrt4 -ladvapi32 -lwsock32 -lodbc32 -lopengl32 libbfd/libbfd.dll.a -lnettle.dll  
+INCS      = -I"D:/Dev-Cpp/MinGW32/include" -I"libbfd" -I"nettle/include"
+CXXINCS   = -I"D:/Dev-Cpp/MinGW32/include" -I"D:/Dev-Cpp/" -I"D:/Dev-Cpp/include/common" -I"libbfd" -I"nettle/include"
 RCINCS    = --include-dir "D:/Dev-Cpp/include/common"
 BIN       = Output/MingW/STM32_Data_Generator.exe
 DEFINES   = -D__WXMSW__ -D__GNUWIN32__ -D_UNICODE
-CXXFLAGS  = $(CXXINCS) $(DEFINES) -I./AES/ -finput-charset=utf-8  
-CFLAGS    = $(INCS) $(DEFINES) -I./AES/ -finput-charset=utf-8  
+CXXFLAGS  = $(CXXINCS) $(DEFINES)   
+CFLAGS    = $(INCS) $(DEFINES)   
 GPROF     = gprof.exe
 ifeq ($(OS),Windows_NT)
    RM = del /Q
@@ -41,9 +41,6 @@ Objects/MingW/STM32_Data_GeneratorApp.o: $(GLOBALDEPS) STM32_Data_GeneratorApp.c
 
 Objects/MingW/STM32_Data_GeneratorDlg.o: $(GLOBALDEPS) STM32_Data_GeneratorDlg.cpp STM32_Data_GeneratorDlg.h Address_Select.h Address_manualDlg.h FileCrypto.h
 	$(CPP) -c STM32_Data_GeneratorDlg.cpp -o Objects/MingW/STM32_Data_GeneratorDlg.o $(CXXFLAGS)
-
-Objects/MingW/aes.o: $(GLOBALDEPS) AES/aes.c AES/aes.h
-	$(CPP) -c AES/aes.c -o Objects/MingW/aes.o $(CXXFLAGS)
 
 Objects/MingW/Address_Select.o: $(GLOBALDEPS) Address_Select.cpp Address_Select.h
 	$(CPP) -c Address_Select.cpp -o Objects/MingW/Address_Select.o $(CXXFLAGS)

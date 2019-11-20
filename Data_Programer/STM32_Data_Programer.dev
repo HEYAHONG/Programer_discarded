@@ -1,7 +1,7 @@
 [Project]
 FileName=STM32_Data_Programer.dev
 Name=STM32_Data_Programer
-UnitCount=12
+UnitCount=10
 PchHead=-1
 PchSource=-1
 Ver=3
@@ -92,13 +92,13 @@ UnitCount=11
 ProfileName=MingW gcc
 Type=0
 ObjFiles=
-Includes=dlfcn;AES
-Libs=dlfcn
+Includes=dlfcn;nettle/include
+Libs=dlfcn;nettle/lib
 ResourceIncludes=
 MakeIncludes=
 Compiler=
 CppCompiler=
-Linker=-mwindows_@@_-l$(WXLIBNAME)_@@_-l$(WXLIBNAME)_gl_@@_-lwxscintilla_@@_-lwxtiff_@@_-lwxjpeg_@@_-lwxpng_@@_-lwxzlib_@@_-lwxregexu_@@_-lwxexpat_@@_-lkernel32_@@_-luser32_@@_-lgdi32_@@_-lcomdlg32_@@_-lwinspool_@@_-lwinmm_@@_-lshell32_@@_-lcomctl32_@@_-lole32_@@_-loleaut32_@@_-luuid_@@_-lrpcrt4_@@_-ladvapi32_@@_-lwsock32_@@_-lodbc32_@@_-lopengl32_@@_-ldl_@@_
+Linker=-mwindows_@@_-l$(WXLIBNAME)_@@_-l$(WXLIBNAME)_gl_@@_-lwxscintilla_@@_-lwxtiff_@@_-lwxjpeg_@@_-lwxpng_@@_-lwxzlib_@@_-lwxregexu_@@_-lwxexpat_@@_-lkernel32_@@_-luser32_@@_-lgdi32_@@_-lcomdlg32_@@_-lwinspool_@@_-lwinmm_@@_-lshell32_@@_-lcomctl32_@@_-lole32_@@_-loleaut32_@@_-luuid_@@_-lrpcrt4_@@_-ladvapi32_@@_-lwsock32_@@_-lodbc32_@@_-lopengl32_@@_-ldl_@@_-lnettle.dll_@@_
 PreprocDefines=__WXMSW___@@___GNUWIN32___@@__UNICODE_@@_
 CompilerSettings=0000000000000000000000
 Icon=
@@ -174,11 +174,11 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit10]
-FileName=AES\aes.c
+FileName=UAC.manifest
 CompileCpp=1
 Folder=STM32_Data_Programer
-Compile=1
-Link=1
+Compile=0
+Link=0
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=

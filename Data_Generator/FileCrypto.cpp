@@ -129,12 +129,12 @@ void FileCrypto::WxButton1Click(wxCommandEvent& event)
 	// insert your code here
 	uint8_t aes_in_buff[32],aes_out_buff[32];
 	uint8_t aes_key[32];
-	uint8_t *aes_w=aes_init(sizeof(aes_key));
+	struct aes256_ctx aes_ctx;
 	{
         wxString key=WxEdit1->GetValue();
         memset(aes_key,0,sizeof(aes_key)); 
         memcpy(aes_key,((std::string)key.c_str()).c_str(),key.Len());
-        aes_key_expansion(aes_key, aes_w);
+        aes256_set_encrypt_key(&aes_ctx,aes_key);
     }
 	{//写入文件头
         Dat_header header;
@@ -145,7 +145,8 @@ void FileCrypto::WxButton1Click(wxCommandEvent& event)
         memcpy(aes_in_buff,&header,32);
         
         //加密并写入文件 
-        aes_cipher(aes_in_buff,aes_out_buff,aes_w);
+        //aes_cipher(aes_in_buff,aes_out_buff,aes_w);
+        aes256_encrypt(&aes_ctx,32,aes_out_buff,aes_in_buff);
         fwrite(aes_out_buff,32,1,dat); 
                 
     }
@@ -157,15 +158,16 @@ void FileCrypto::WxButton1Click(wxCommandEvent& event)
             fread(aes_in_buff,1,32,hex);//读取hex文件 
             
             //加密并写入文件 
-            aes_key_expansion(aes_key, aes_w);
-            aes_cipher(aes_in_buff,aes_out_buff,aes_w);
+            //aes_key_expansion(aes_key, aes_w);
+            //aes_cipher(aes_in_buff,aes_out_buff,aes_w);
+            aes256_encrypt(&aes_ctx,32,aes_out_buff,aes_in_buff);
             fwrite(aes_out_buff,32,1,dat); 
             memset(aes_in_buff,0,32);
         } 
         
     }
 	WxButton1->Disable();
-	free(aes_w);
+	//free(aes_w);
 	EndModal(wxID_OK); 
 }
 

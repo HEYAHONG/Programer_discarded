@@ -219,8 +219,10 @@ void STM32_Data_ProgramerDlg::Data_Init()
                           memset(aes_key,0,sizeof(aes_key));
                           strcpy((char *)aes_key,password);
                           {
-                                uint8_t *w=aes_init(32);
-                                aes_key_expansion(aes_key,w);
+                                //uint8_t *w=aes_init(32);
+                                //aes_key_expansion(aes_key,w);
+                                struct aes256_ctx ctx;
+                                aes256_set_decrypt_key(&ctx,aes_key);
                                 {
                                     FILE *fp=fopen(((std::string)(DataDir+"/"+getenv("data")).c_str()).c_str(),"rb");
                                     if(fp != NULL)
@@ -245,8 +247,9 @@ void STM32_Data_ProgramerDlg::Data_Init()
                                                 {
                                                     Info->AppendText("读取错误\n");
                                                 }
-                                            aes_key_expansion(aes_key,w);
-                                            aes_inv_cipher(aes_in,aes_out,w);                                            
+                                            //aes_key_expansion(aes_key,w);
+                                            //aes_inv_cipher(aes_in,aes_out,w);
+                                            aes256_decrypt(&ctx,32,aes_out,aes_in);                                            
                                             //Info->AppendText(aes_out);                                             
                                             memcpy((char *)data+pos,(char *)aes_out,32);
                                             pos+=32;
@@ -265,14 +268,16 @@ void STM32_Data_ProgramerDlg::Data_Init()
                                                 memset(buff,0,sizeof(buff));
                                                 sprintf(buff,"%d",strlen((char *)hex_data)); 
                                                 
-                                                Info->AppendText((wxString)"\n加密数据hex大小:"+buff+"B\n"); 
+                                                //Info->AppendText(hex_data);
+                                                
+                                                Info->AppendText((wxString)"加密数据hex大小:"+buff+"B\n"); 
                                             }
                                         }
                                     }
                                                                         
                                 }
                                 
-                                free(w);
+                               // free(w);
                           }                     
                     };                
             } 

@@ -127,19 +127,22 @@ void FilePassWord::WxButton1Click(wxCommandEvent& event)
                 }
         {
             uint8_t aes_in[32],aes_out[32],aes_key[32];
-            uint8_t *w=aes_init(32);
+            //uint8_t *w=aes_init(32);
+            struct aes256_ctx ctx;
             memset(aes_key,0,sizeof(aes_key));
             memcpy(aes_key,((std::string)WxEdit1->GetValue().c_str()).c_str(),WxEdit1->GetValue().Len()); 
-            aes_key_expansion(aes_key,w);
+            //aes_key_expansion(aes_key,w);
+            aes256_set_decrypt_key(&ctx,aes_key);
             if(fread(aes_in,1,32,fp)==32)
                 {
-                   aes_inv_cipher(aes_in,aes_out,w);
+                  // aes_inv_cipher(aes_in,aes_out,w);
+                  aes256_decrypt(&ctx,32,aes_out,aes_in);
                    memcpy(&fheader,aes_out,32); 
                    if(fheader.data.flag != 0x12345678 || fheader.data.dat_size != fsize || fheader.data.hex_data_size!=(fsize-32))
                    {
                     wxMessageDialog dlg(this,"密码错误!\n","警告");
                     dlg.ShowModal();
-                    free(w); 
+                    //free(w); 
                     fclose(fp);
                     return;
                    }
@@ -155,12 +158,12 @@ void FilePassWord::WxButton1Click(wxCommandEvent& event)
                 {
                     wxMessageDialog dlg(this,"数据文件读取错误!\n","警告");
                     dlg.ShowModal();
-                    free(w); 
+                    //free(w); 
                     fclose(fp); 
                     EndModal(wxID_CANCEL);
                     return; 
                 }
-            free(w);
+            //free(w);
                
         }
         fclose(fp); 

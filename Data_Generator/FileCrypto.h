@@ -22,7 +22,7 @@
 	#include <wx/wxprec.h>
 #endif
 
-#include "aes.h"
+#include "nettle/aes.h"
 #include "string.h"
 #include "stdlib.h"
 #include "stdio.h"
