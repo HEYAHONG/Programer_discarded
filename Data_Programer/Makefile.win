@@ -1,7 +1,7 @@
 # Project: STM32_Data_Programer
 # Compiler: Default GCC compiler
 # Compiler Type: MingW 3
-# Makefile created by wxDev-C++ IDE 7.4.2.569 on 20-11-19 09:50
+# Makefile created by wxDev-C++ IDE 7.4.2.569 on 20-11-19 16:27
 
 WXLIBNAME = wxmsw29u
 CPP       = g++.exe
@@ -36,10 +36,10 @@ clean: clean-custom
 $(BIN): $(OBJ)
 	$(LINK) $(LINKOBJ) -o "$(BIN)" $(LIBS) 
 
-Objects/MingW/STM32_Data_ProgramerApp.o: $(GLOBALDEPS) STM32_Data_ProgramerApp.cpp STM32_Data_ProgramerApp.h STM32_Data_ProgramerDlg.h
+Objects/MingW/STM32_Data_ProgramerApp.o: $(GLOBALDEPS) STM32_Data_ProgramerApp.cpp STM32_Data_ProgramerApp.h STM32_Data_ProgramerDlg.h plugin.h
 	$(CPP) -c STM32_Data_ProgramerApp.cpp -o Objects/MingW/STM32_Data_ProgramerApp.o $(CXXFLAGS)
 
-Objects/MingW/STM32_Data_ProgramerDlg.o: $(GLOBALDEPS) STM32_Data_ProgramerDlg.cpp STM32_Data_ProgramerDlg.h FilePassWord.h
+Objects/MingW/STM32_Data_ProgramerDlg.o: $(GLOBALDEPS) STM32_Data_ProgramerDlg.cpp STM32_Data_ProgramerDlg.h plugin.h FilePassWord.h
 	$(CPP) -c STM32_Data_ProgramerDlg.cpp -o Objects/MingW/STM32_Data_ProgramerDlg.o $(CXXFLAGS)
 
 Objects/MingW/FilePassWord.o: $(GLOBALDEPS) FilePassWord.cpp FilePassWord.h
