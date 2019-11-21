@@ -45,6 +45,13 @@ STM32_Data_ProgramerDlg::STM32_Data_ProgramerDlg(wxWindow *parent, wxWindowID id
 : wxDialog(parent, id, title, position, size, style)
 {
     hex_data=NULL;//赋初值 
+    {//将窗口指针地址放入环境变量
+        uint64_t Dialog_Ptr=(uint64_t)this;
+        char env[200];
+        memset(env,0,sizeof(env));
+        sprintf(env,"Dialog_Ptr=%016X",Dialog_Ptr); 
+        putenv(env);
+    } 
 	CreateGUIControls();
 	
 }
@@ -601,4 +608,8 @@ void STM32_Data_ProgramerDlg::WxButton3Click(wxCommandEvent& event)
 {
 	// insert your code here
 	start_flash(); 
+}
+wxTextCtrl * STM32_Data_ProgramerDlg::Get_Info_Ctl()
+{
+    return Info; 
 }

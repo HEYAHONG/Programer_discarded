@@ -70,6 +70,7 @@ class STM32_Data_ProgramerDlg : public wxDialog
 	    uint8_t *hex_data; 
 	    void search_plugin(); 
 	    void start_flash(); 
+	    wxTextCtrl * Get_Info_Ctl(); 
 		void STM32_Data_ProgramerDlgEnterWindow(wxMouseEvent& event);
 		void STM32_Data_ProgramerDlgInitDialog(wxInitDialogEvent& event);
 		void WxButton1Click(wxCommandEvent& event);
@@ -80,7 +81,7 @@ class STM32_Data_ProgramerDlg : public wxDialog
 		void WxButton2Click(wxCommandEvent& event);
 		void WxButton3Click(wxCommandEvent& event);
 	
-	private:
+	public:
 		//Do not add custom control declarations between 
 		//GUI Control Declaration Start and GUI Control Declaration End.
 		//wxDev-C++ will remove them. Add custom code after the block.
