@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="openocd_plugin_backend_win32Dialog">
+		<title>openocd__backend</title>
+		<size>556,367</size>
+		<object class="wxStaticBox" name="ID_STATICBOX1" variable="StaticBox1" member="yes">
+			<label>接口</label>
+			<pos>8,8</pos>
+			<size>152,48</size>
+		</object>
+		<object class="wxComboBox" name="ID_COMBOBOX1" variable="interface1" member="yes">
+			<pos>16,24</pos>
+			<size>136,22</size>
+			<style>wxCB_READONLY</style>
+		</object>
+		<object class="wxStaticBox" name="ID_STATICBOX2" variable="StaticBox2" member="yes">
+			<label>目标</label>
+			<pos>168,8</pos>
+			<size>144,48</size>
+		</object>
+		<object class="wxComboBox" name="ID_COMBOBOX2" variable="target1" member="yes">
+			<pos>176,24</pos>
+			<size>128,22</size>
+			<style>wxCB_READONLY</style>
+		</object>
+		<object class="wxStaticBox" name="ID_STATICBOX3" variable="StaticBox3" member="yes">
+			<label>传输类型</label>
+			<pos>8,64</pos>
+			<size>152,56</size>
+		</object>
+		<object class="wxComboBox" name="ID_COMBOBOX3" variable="transport1" member="yes">
+			<pos>16,80</pos>
+			<size>136,22</size>
+			<style>wxCB_READONLY</style>
+		</object>
+		<object class="wxStaticBox" name="ID_STATICBOX4" variable="StaticBox4" member="yes">
+			<label>GDB连接端口</label>
+			<pos>168,64</pos>
+			<size>144,56</size>
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="TextCtrl1" member="yes">
+			<value>55555</value>
+			<pos>176,80</pos>
+			<size>128,24</size>
+			<style>wxTE_CENTRE</style>
+			<handler function="OnTextCtrl1TextEnter" entry="EVT_TEXT" />
+			<handler function="OnTextCtrl1TextEnter" entry="EVT_TEXT_ENTER" />
+		</object>
+		<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="log2" member="yes">
+			<pos>0,128</pos>
+			<size>552,232</size>
+			<style>wxTE_MULTILINE|wxVSCROLL|wxHSCROLL</style>
+		</object>
+		<object class="wxStaticBox" name="ID_STATICBOX5" variable="StaticBox5" member="yes">
+			<label>日志框选项</label>
+			<pos>328,16</pos>
+			<size>184,104</size>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
+			<label>清理间隔时间:</label>
+			<pos>344,40</pos>
+			<size>80,24</size>
+		</object>
+		<object class="wxStaticText" name="ID_STATICTEXT2" variable="StaticText2" member="yes">
+			<label>日志缓冲大小:</label>
+			<pos>344,80</pos>
+			<size>80,16</size>
+		</object>
+		<object class="wxTimer" name="ID_TIMER1" variable="Timer1" member="yes">
+			<interval>2000</interval>
+			<extra_code>Timer1.Start();</extra_code>
+			<handler function="OnTimer1Trigger" entry="EVT_TIMER" />
+		</object>
+		<object class="wxTimer" name="ID_TIMER2" variable="Timer2" member="yes">
+			<interval>2</interval>
+			<handler function="OnTimer2Trigger" entry="EVT_TIMER" />
+		</object>
+	</object>
+</wxsmith>

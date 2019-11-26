@@ -1,0 +1,4 @@
+#include <wx/msw/wx.rc>
+MIAN ICON "icon.ico"
+
+1 24 "UAC.manifest"

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="MainWindow">
+		<title>Jlink__plugin__backend</title>
+		<centered>1</centered>
+		<size>410,274</size>
+		<style>wxDEFAULT_DIALOG_STYLE|wxCLOSE_BOX|wxMINIMIZE_BOX|wxSTATIC_BORDER</style>
+		<handler function="OnClose" entry="EVT_CLOSE" />
+		<object class="wxRichTextCtrl" name="ID_RICHTEXTCTRL1" variable="Info" member="yes">
+			<pos>0,72</pos>
+			<size>408,192</size>
+			<style>wxRE_MULTILINE|wxRE_READONLY</style>
+		</object>
+		<object class="wxButton" name="ID_BUTTON1" variable="Button1" member="yes">
+			<label>Connect</label>
+			<pos>0,8</pos>
+			<handler function="OnButton1Click" entry="EVT_BUTTON" />
+		</object>
+		<object class="wxTimer" name="ID_TIMER1" variable="Timer1" member="yes">
+			<interval>1000</interval>
+			<extra_code>Timer1.Start();</extra_code>
+			<handler function="OnTimer1Trigger" entry="EVT_TIMER" />
+		</object>
+		<object class="wxTimer" name="ID_TIMER2" variable="InfoTimer" member="yes">
+			<interval>100</interval>
+			<extra_code>InfoTimer.Start();</extra_code>
+			<handler function="OnInfoTimerTrigger" entry="EVT_TIMER" />
+		</object>
+	</object>
+</wxsmith>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="plugin" />
+		<Option pch_mode="2" />
+		<Option compiler="dev-cpp_gcc_compiler" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/libplugin" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="3" />
+				<Option compiler="dev-cpp_gcc_compiler" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/libplugin" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="3" />
+				<Option compiler="dev-cpp_gcc_compiler" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=gnu++0x" />
+			<Add option="-D__WXMSW__" />
+			<Add option="-D__GNUWIN32__" />
+			<Add option="-D_UNICODE" />
+			<Add option="-DHAVE_STRCASECMP_IN_STRINGS_H" />
+			<Add directory="D:/Dev-Cpp/include/common" />
+			<Add directory="D:/Dev-Cpp/include/common/msvc" />
+			<Add directory="../../../Data_Programer" />
+			<Add directory="../../dlfcn" />
+			<Add directory="../../nettle/include" />
+		</Compiler>
+		<Linker>
+			<Add option="-mwindows" />
+		</Linker>
+		<Unit filename="plugin.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="plugin.h" />
+		<Unit filename="plugin_cpp.cpp" />
+		<Unit filename="test.cpp" />
+		<Unit filename="test.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
