@@ -1,0 +1,4 @@
+EXPORTS
+    get_plugin_type @1
+    process_hex @2
+    process_program @3

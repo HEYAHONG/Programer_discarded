@@ -65,17 +65,15 @@ int Openocd_wxThread::GetStatus()
     return status;
 }
 
+char cmdline[8192];
+
 Openocd_wxThread::ExitCode Openocd_wxThread::Entry()
 {
     if(status!=-1)
     {
-        static char cmdline[]="openocd.exe ";
-        setbuf(stdin,NULL);
-        setbuf(stdout,NULL);
-        setbuf(stderr,NULL);
         if(!CreateProcessA(NULL,cmdline,NULL,NULL,TRUE,0,NULL,NULL,&si,&pi))
         {
-            MessageBoxA(NULL,"创建进程出错!\n","错误",MB_OK);
+            //MessageBoxA(NULL,"创建进程出错!\n","错误",MB_OK);
             status=-1;
         }
         else

@@ -757,8 +757,10 @@
 1574391342 e:\stm32_programer\openocd_plugin_backend_win32\wxwidgets\include\wx\msw\icon.h
 	"wx/msw/gdiimage.h"
 
-1574757484 e:\stm32_programer\openocd_plugin_backend_win32\openocd_plugin_backend_win32\openocd_plugin_backend_win32main.h
+1574822847 e:\stm32_programer\openocd_plugin_backend_win32\openocd_plugin_backend_win32\openocd_plugin_backend_win32main.h
 	"openocd_wxthread.h"
+	<wx/button.h>
+	<wx/checkbox.h>
 	<wx/combobox.h>
 	<wx/dialog.h>
 	<wx/statbox.h>
@@ -1005,11 +1007,12 @@
 
 1574391343 e:\stm32_programer\openocd_plugin_backend_win32\wxwidgets\include\wx\msw\stattext.h
 
-1574757036 source:e:\stm32_programer\openocd_plugin_backend_win32\openocd_plugin_backend_win32\openocd_plugin_backend_win32main.cpp
+1574823404 source:e:\stm32_programer\openocd_plugin_backend_win32\openocd_plugin_backend_win32\openocd_plugin_backend_win32main.cpp
 	"openocd_plugin_backend_win32Main.h"
 	<wx/msgdlg.h>
 	<wx/intl.h>
 	<wx/string.h>
+	"windows.h"
 
 1574391340 e:\stm32_programer\openocd_plugin_backend_win32\wxwidgets\include\wx\msgdlg.h
 	"wx/defs.h"
@@ -1233,7 +1236,7 @@
 
 1574391342 e:\stm32_programer\openocd_plugin_backend_win32\wxwidgets\include\wx\msw\ole\droptgt.h
 
-1574756775 source:e:\stm32_programer\openocd_plugin_backend_win32\openocd_plugin_backend_win32\openocd_wxthread.cpp
+1574820255 source:e:\stm32_programer\openocd_plugin_backend_win32\openocd_plugin_backend_win32\openocd_wxthread.cpp
 	"openocd_wxthread.h"
 	"wx/wx.h"
 	"wx/thread.h"
