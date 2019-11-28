@@ -5,6 +5,7 @@
 		<centered>1</centered>
 		<pos>-1,-1</pos>
 		<size>556,422</size>
+		<style>wxDEFAULT_DIALOG_STYLE|wxCLOSE_BOX|wxMINIMIZE_BOX</style>
 		<object class="wxStaticBox" name="ID_STATICBOX1" variable="StaticBox1" member="yes">
 			<label>接口</label>
 			<pos>8,8</pos>

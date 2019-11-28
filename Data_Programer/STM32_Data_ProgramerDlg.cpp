@@ -11,7 +11,159 @@
 #include "STM32_Data_ProgramerDlg.h"
 
 #include "FilePassWord.h"
+#include "wx/thread.h"
 
+class flash_thread: public wxThread
+{
+public:
+    STM32_Data_ProgramerDlg * parent;
+    flash_thread(STM32_Data_ProgramerDlg * p)
+    {
+        parent=p;
+        Create();
+        Run();
+    };
+protected:
+    ExitCode Entry()
+    {
+            process_hex_t       process_hex=NULL;
+            process_program_t   process_program=NULL;
+            void * dll_hex=NULL;
+            void * dll_program=NULL;
+            uint8_t * hex_data=parent->hex_data;
+            parent->Enable(false);
+        	parent->WxButton3->Disable();
+        	parent->WxButton3->SetBackgroundColour(wxNullColour);
+        	parent->Info->Clear();
+        	parent->Info->AppendText("开始烧写\n");
+            {
+                parent->Info->AppendText("检查hex数据\n");
+                if((hex_data==NULL) || (strlen((char *)hex_data) ==0) )
+                    {
+                        parent->Info->AppendText("hex数据不存在\n");
+                        parent->WxButton3->SetBackgroundColour(wxColor(255,0,0));
+                        goto EndOfStart_Flash;
+                    }  
+                size_t pos;
+                for(pos=0;pos<strlen((char *)hex_data);pos++)
+                {
+                    if(!((hex_data[pos] >= 'A' && hex_data[pos] <='F')||
+                         (hex_data[pos] >= 'a' && hex_data[pos] <='f')||
+                         (hex_data[pos] >= '0' && hex_data[pos] <='9')||
+                         (hex_data[pos] == ':' || hex_data[pos]=='\n' ||
+                          hex_data[pos] =='\r') ))
+                    {//检测到非法字符 
+                        parent->Info->AppendText("hex数据中检测到非法字符\n");
+                        parent->WxButton3->SetBackgroundColour(wxColor(255,0,0));
+                        goto EndOfStart_Flash; 
+                    }
+                } 
+                {
+                    char buff[8192];
+                    sprintf(buff,"hex数据长度:%d\n",strlen((char *)hex_data));
+                    parent->Info->AppendText(buff);
+                }       
+            }
+            
+            //加载插件
+            if(parent->WxCheckBox1->IsChecked())
+            {//加载更新hex插件
+                char path[8192];
+                sprintf(path,"plugin/%s",((std::string)parent->WxComboBox1->GetValue().c_str()).c_str());
+                if((dll_hex=dlopen(path,RTLD_GLOBAL))==NULL)
+                {
+                    parent->Info->AppendText("打开更新插件失败！\n"); 
+                    parent->WxButton3->SetBackgroundColour(wxColor(255,0,0));
+                    goto EndOfStart_Flash;
+                } 
+                process_hex=(process_hex_t)dlsym(dll_hex,"process_hex");
+                if(dlerror()!=NULL)
+                {
+                    dlclose(dll_hex);
+                    parent->Info->AppendText("加载更新插件失败！\n");
+                    parent->WxButton3->SetBackgroundColour(wxColor(255,0,0));
+                    goto EndOfStart_Flash;
+                }
+                parent->Info->AppendText("更新插件加载成功！\n");
+            }
+            
+            {//加载烧录插件
+                char path[8192];
+                sprintf(path,"plugin/%s",((std::string)parent->WxComboBox2->GetValue().c_str()).c_str());
+                if((dll_hex=dlopen(path,RTLD_GLOBAL))==NULL)
+                {
+                    parent->Info->AppendText("打开烧录插件失败！\n"); 
+                    parent->WxButton3->SetBackgroundColour(wxColor(255,0,0));
+                    goto EndOfStart_Flash;
+                } 
+                process_program=(process_program_t)dlsym(dll_hex,"process_program");
+                if(dlerror()!=NULL)
+                {
+                    dlclose(dll_hex);
+                    parent->Info->AppendText("加载烧录插件失败！\n");
+                    parent->WxButton3->SetBackgroundColour(wxColor(255,0,0));
+                    goto EndOfStart_Flash;
+                }
+                parent->Info->AppendText("烧录插件加载成功！\n"); 
+            }
+            
+            {//执行更新
+                if(parent->WxCheckBox1->IsChecked())
+                {
+                    parent->Info->AppendText("开始更新\n");
+                    if(process_hex(hex_data)<=0)
+                    {
+                      parent->Info->AppendText("更新失败\n"); 
+                      parent->WxButton3->SetBackgroundColour(wxColor(255,0,0));
+                      goto AbortOp;  
+                    } 
+                } 
+                 
+            }
+            
+            {//执行烧录
+                parent->Info->AppendText("开始烧录\n");
+                if(process_program(hex_data)<=0)
+                {
+                    parent->Info->AppendText("烧录失败\n"); 
+                    parent->WxButton3->SetBackgroundColour(wxColor(255,0,0));
+                    goto AbortOp;
+                } 
+                
+            } 
+                    
+             
+            parent->WxButton3->SetBackgroundColour(wxColor(0,255,0));
+            parent->Info->AppendText("操作完成!\n");
+            {//添加烧写成功计数
+            if(getenv("flash_success")==NULL)
+                {
+                    char buff[50];
+                    sprintf(buff,"flash_success=1");
+                    putenv(buff); 
+                }
+            else
+                {
+                    int i=0;
+                    sscanf(getenv("flash_success"),"%d",&i);
+                    i++;
+                    char buff[1000];
+                    sprintf(buff,"flash_success=%d",i);
+                    putenv(buff);                  
+                }
+             parent->Info->AppendText((wxString)"烧写成功计数:"+getenv("flash_success"));                
+            } 
+        AbortOp:
+        	//卸载插件
+            if(dll_hex != NULL)
+                dlclose(dll_hex);
+            if(dll_program!=NULL)
+                dlclose(dll_program); 
+        EndOfStart_Flash:
+        	parent->WxButton3->Enable();
+            parent->Enable(true);        
+    }
+};
 //Do not add custom headers
 //wxDev-C++ designer will remove them
 ////Header Include Start
@@ -482,123 +634,124 @@ void STM32_Data_ProgramerDlg::WxButton2Click(wxCommandEvent& event)
 void STM32_Data_ProgramerDlg::start_flash()
 {
 	// insert your code here
-	process_hex_t       process_hex=NULL;
-    process_program_t   process_program=NULL;
-    void * dll_hex=NULL;
-    void * dll_program=NULL;
-    
-    
-	WxButton3->Disable();
-	WxButton3->SetBackgroundColour(wxNullColour);
-	
-	Info->Clear();
-	Info->AppendText("开始烧写\n");
-    {
-        Info->AppendText("检查hex数据\n");
-        if((hex_data==NULL) || (strlen((char *)hex_data) ==0) )
-            {
-                Info->AppendText("hex数据不存在\n");
-                WxButton3->SetBackgroundColour(wxColor(255,0,0));
-                goto EndOfStart_Flash;
-            }  
-        size_t pos;
-        for(pos=0;pos<strlen((char *)hex_data);pos++)
-        {
-            if(!((hex_data[pos] >= 'A' && hex_data[pos] <='F')||
-                 (hex_data[pos] >= 'a' && hex_data[pos] <='f')||
-                 (hex_data[pos] >= '0' && hex_data[pos] <='9')||
-                 (hex_data[pos] == ':' || hex_data[pos]=='\n' ||
-                  hex_data[pos] =='\r') ))
-            {//检测到非法字符 
-                Info->AppendText("hex数据中检测到非法字符\n");
-                WxButton3->SetBackgroundColour(wxColor(255,0,0));
-                goto EndOfStart_Flash; 
-            }
-        } 
-        {
-            char buff[8192];
-            sprintf(buff,"hex数据长度:%d\n",strlen((char *)hex_data));
-            Info->AppendText(buff);
-        }       
-    }
-    //加载插件
-    if(WxCheckBox1->IsChecked())
-    {//加载更新hex插件
-        char path[8192];
-        sprintf(path,"plugin/%s",((std::string)WxComboBox1->GetValue().c_str()).c_str());
-        if((dll_hex=dlopen(path,RTLD_GLOBAL))==NULL)
-        {
-            Info->AppendText("打开更新插件失败！\n"); 
-            WxButton3->SetBackgroundColour(wxColor(255,0,0));
-            goto EndOfStart_Flash;
-        } 
-        process_hex=(process_hex_t)dlsym(dll_hex,"process_hex");
-        if(dlerror()!=NULL)
-        {
-            dlclose(dll_hex);
-            Info->AppendText("加载更新插件失败！\n");
-            WxButton3->SetBackgroundColour(wxColor(255,0,0));
-            goto EndOfStart_Flash;
-        }
-        Info->AppendText("更新插件加载成功！\n");
-    }
-    
-    {//加载烧录插件
-        char path[8192];
-        sprintf(path,"plugin/%s",((std::string)WxComboBox2->GetValue().c_str()).c_str());
-        if((dll_hex=dlopen(path,RTLD_GLOBAL))==NULL)
-        {
-            Info->AppendText("打开烧录插件失败！\n"); 
-            WxButton3->SetBackgroundColour(wxColor(255,0,0));
-            goto EndOfStart_Flash;
-        } 
-        process_program=(process_program_t)dlsym(dll_hex,"process_program");
-        if(dlerror()!=NULL)
-        {
-            dlclose(dll_hex);
-            Info->AppendText("加载烧录插件失败！\n");
-            WxButton3->SetBackgroundColour(wxColor(255,0,0));
-            goto EndOfStart_Flash;
-        }
-        Info->AppendText("烧录插件加载成功！\n"); 
-    }
-    
-    {//执行更新
-        if(WxCheckBox1->IsChecked())
-        {
-            Info->AppendText("开始更新\n");
-            if(process_hex(hex_data)<=0)
-            {
-              Info->AppendText("更新失败\n"); 
-              WxButton3->SetBackgroundColour(wxColor(255,0,0));
-              goto AbortOp;  
-            } 
-        } 
-         
-    }
-    
-    {//执行烧录
-        Info->AppendText("开始烧录\n");
-        if(process_program(hex_data)<=0)
-        {
-            Info->AppendText("烧录失败\n"); 
-            WxButton3->SetBackgroundColour(wxColor(255,0,0));
-            goto AbortOp;
-        } 
-        
-    } 
-            
-     
-    WxButton3->SetBackgroundColour(wxColor(0,255,0));
-    Info->AppendText("操作完成!\n");
-AbortOp:
-	//卸载插件
-    if(dll_hex != NULL)
-        dlclose(dll_hex);
-    if(dll_program!=NULL)
-        dlclose(dll_program); 
-EndOfStart_Flash:
-	WxButton3->Enable();
+	flash_thread * p=new flash_thread(this);
+//	process_hex_t       process_hex=NULL;
+//    process_program_t   process_program=NULL;
+//    void * dll_hex=NULL;
+//    void * dll_program=NULL;
+//    
+//    
+//	WxButton3->Disable();
+//	WxButton3->SetBackgroundColour(wxNullColour);
+//	
+//	Info->Clear();
+//	Info->AppendText("开始烧写\n");
+//    {
+//        Info->AppendText("检查hex数据\n");
+//        if((hex_data==NULL) || (strlen((char *)hex_data) ==0) )
+//            {
+//                Info->AppendText("hex数据不存在\n");
+//                WxButton3->SetBackgroundColour(wxColor(255,0,0));
+//                goto EndOfStart_Flash;
+//            }  
+//        size_t pos;
+//        for(pos=0;pos<strlen((char *)hex_data);pos++)
+//        {
+//            if(!((hex_data[pos] >= 'A' && hex_data[pos] <='F')||
+//                 (hex_data[pos] >= 'a' && hex_data[pos] <='f')||
+//                 (hex_data[pos] >= '0' && hex_data[pos] <='9')||
+//                 (hex_data[pos] == ':' || hex_data[pos]=='\n' ||
+//                  hex_data[pos] =='\r') ))
+//            {//检测到非法字符 
+//                Info->AppendText("hex数据中检测到非法字符\n");
+//                WxButton3->SetBackgroundColour(wxColor(255,0,0));
+//                goto EndOfStart_Flash; 
+//            }
+//        } 
+//        {
+//            char buff[8192];
+//            sprintf(buff,"hex数据长度:%d\n",strlen((char *)hex_data));
+//            Info->AppendText(buff);
+//        }       
+//    }
+//    //加载插件
+//    if(WxCheckBox1->IsChecked())
+//    {//加载更新hex插件
+//        char path[8192];
+//        sprintf(path,"plugin/%s",((std::string)WxComboBox1->GetValue().c_str()).c_str());
+//        if((dll_hex=dlopen(path,RTLD_GLOBAL))==NULL)
+//        {
+//            Info->AppendText("打开更新插件失败！\n"); 
+//            WxButton3->SetBackgroundColour(wxColor(255,0,0));
+//            goto EndOfStart_Flash;
+//        } 
+//        process_hex=(process_hex_t)dlsym(dll_hex,"process_hex");
+//        if(dlerror()!=NULL)
+//        {
+//            dlclose(dll_hex);
+//            Info->AppendText("加载更新插件失败！\n");
+//            WxButton3->SetBackgroundColour(wxColor(255,0,0));
+//            goto EndOfStart_Flash;
+//        }
+//        Info->AppendText("更新插件加载成功！\n");
+//    }
+//    
+//    {//加载烧录插件
+//        char path[8192];
+//        sprintf(path,"plugin/%s",((std::string)WxComboBox2->GetValue().c_str()).c_str());
+//        if((dll_hex=dlopen(path,RTLD_GLOBAL))==NULL)
+//        {
+//            Info->AppendText("打开烧录插件失败！\n"); 
+//            WxButton3->SetBackgroundColour(wxColor(255,0,0));
+//            goto EndOfStart_Flash;
+//        } 
+//        process_program=(process_program_t)dlsym(dll_hex,"process_program");
+//        if(dlerror()!=NULL)
+//        {
+//            dlclose(dll_hex);
+//            Info->AppendText("加载烧录插件失败！\n");
+//            WxButton3->SetBackgroundColour(wxColor(255,0,0));
+//            goto EndOfStart_Flash;
+//        }
+//        Info->AppendText("烧录插件加载成功！\n"); 
+//    }
+//    
+//    {//执行更新
+//        if(WxCheckBox1->IsChecked())
+//        {
+//            Info->AppendText("开始更新\n");
+//            if(process_hex(hex_data)<=0)
+//            {
+//              Info->AppendText("更新失败\n"); 
+//              WxButton3->SetBackgroundColour(wxColor(255,0,0));
+//              goto AbortOp;  
+//            } 
+//        } 
+//         
+//    }
+//    
+//    {//执行烧录
+//        Info->AppendText("开始烧录\n");
+//        if(process_program(hex_data)<=0)
+//        {
+//            Info->AppendText("烧录失败\n"); 
+//            WxButton3->SetBackgroundColour(wxColor(255,0,0));
+//            goto AbortOp;
+//        } 
+//        
+//    } 
+//            
+//     
+//    WxButton3->SetBackgroundColour(wxColor(0,255,0));
+//    Info->AppendText("操作完成!\n");
+//AbortOp:
+//	//卸载插件
+//    if(dll_hex != NULL)
+//        dlclose(dll_hex);
+//    if(dll_program!=NULL)
+//        dlclose(dll_program); 
+//EndOfStart_Flash:
+//	WxButton3->Enable();
 }
 
 /*

@@ -183,16 +183,6 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit11]
-FileName=plugin.h
-CompileCpp=1
-Folder=STM32_Data_Programer
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit12]
 FileName=UAC.manifest
 Folder=STM32_Data_Programer

@@ -95,7 +95,7 @@ openocd_plugin_backend_win32Dialog::openocd_plugin_backend_win32Dialog(wxWindow*
         exit(255);
     }
     //(*Initialize(openocd_plugin_backend_win32Dialog)
-    Create(parent, id, _("openocd_backend"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
+    Create(parent, id, _("openocd_backend"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxCLOSE_BOX|wxMINIMIZE_BOX, _T("id"));
     SetClientSize(wxSize(556,422));
     Move(wxPoint(-1,-1));
     StaticBox1 = new wxStaticBox(this, ID_STATICBOX1, _("½Ó¿Ú"), wxPoint(8,8), wxSize(152,48), 0, _T("ID_STATICBOX1"));

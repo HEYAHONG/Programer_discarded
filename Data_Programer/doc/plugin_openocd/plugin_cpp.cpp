@@ -251,6 +251,7 @@ void  program_thread()
         }
         send(openocd_socket,"exit\n",sizeof("exit\n"),0);//退出telnet
         close(openocd_socket);
+        Sleep(200);//等待200ms
         remove(hex_file_path);//删除临时文件
 
 }
