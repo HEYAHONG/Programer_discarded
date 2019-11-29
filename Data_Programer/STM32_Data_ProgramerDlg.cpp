@@ -13,6 +13,8 @@
 #include "FilePassWord.h"
 #include "wx/thread.h"
 
+//uint8_t * STM32_Data_ProgramerDlg::hex_data=NULL; 
+
 class flash_thread: public wxThread
 {
 public:
@@ -70,7 +72,7 @@ protected:
             {//加载更新hex插件
                 char path[8192];
                 sprintf(path,"plugin/%s",((std::string)parent->WxComboBox1->GetValue().c_str()).c_str());
-                if((dll_hex=dlopen(path,RTLD_GLOBAL))==NULL)
+                if((dll_hex=dlopen(path,RTLD_NOW))==NULL)
                 {
                     parent->Info->AppendText("打开更新插件失败！\n"); 
                     parent->WxButton3->SetBackgroundColour(wxColor(255,0,0));
@@ -90,7 +92,7 @@ protected:
             {//加载烧录插件
                 char path[8192];
                 sprintf(path,"plugin/%s",((std::string)parent->WxComboBox2->GetValue().c_str()).c_str());
-                if((dll_hex=dlopen(path,RTLD_GLOBAL))==NULL)
+                if((dll_hex=dlopen(path,RTLD_NOW))==NULL)
                 {
                     parent->Info->AppendText("打开烧录插件失败！\n"); 
                     parent->WxButton3->SetBackgroundColour(wxColor(255,0,0));
@@ -161,7 +163,7 @@ protected:
                 dlclose(dll_program); 
         EndOfStart_Flash:
         	parent->WxButton3->Enable();
-            parent->Enable(true);        
+            parent->Enable(true);       
     }
 };
 //Do not add custom headers
@@ -358,8 +360,8 @@ void STM32_Data_ProgramerDlg::Data_Init()
                     fseek(fp,0,SEEK_END);
                     size_t len = ftell(fp);
                     fseek(fp,0,SEEK_SET);                       
-                    uint8_t *   data=(uint8_t *)malloc(len+50);
-                    memset(data,0,len+50);
+                    uint8_t *   data=(uint8_t *)malloc((len+50)*sizeof(uint8_t));
+                    //memset(data,0,len+50);
                      { 
                         size_t pos=0,read_num=0;
                         while(len-pos>=1)
@@ -422,8 +424,8 @@ void STM32_Data_ProgramerDlg::Data_Init()
                                             { 
                                                Info->AppendText("文件可能存在错误!\n"); 
                                             } 
-                                        data=(uint8_t *)malloc(size);
-                                        memset(data,0,sizeof(data));
+                                        data=(uint8_t *)malloc((size+50)*sizeof(uint8_t));
+                                        //memset(data,0,size+50);
                                         do
                                         {
                                             memset(aes_in,0,sizeof(aes_in));

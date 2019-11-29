@@ -1,7 +1,7 @@
 # Project: STM32_Data_Programer
 # Compiler: Default GCC compiler
 # Compiler Type: MingW 3
-# Makefile created by wxDev-C++ IDE 7.4.2.569 on 28-11-19 10:10
+# Makefile created by wxDev-C++ IDE 7.4.2.569 on 29-11-19 08:47
 
 WXLIBNAME = wxmsw29u
 CPP       = g++.exe

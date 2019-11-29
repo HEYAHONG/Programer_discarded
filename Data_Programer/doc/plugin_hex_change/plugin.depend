@@ -1,0 +1,21 @@
+# depslib dependency file v1.0
+1574220971 source:e:\users\administrator\codeblocks_project\plugin_test\plugin.c
+	"stdio.h"
+	"plugin.h"
+
+1574220876 e:\users\administrator\codeblocks_project\plugin_test\plugin.h
+	"stdint.h"
+
+1574992558 source:e:\stm32_programer\data_programer\doc\plugin_hex_change\plugin.cpp
+	"stdio.h"
+	"stdlib.h"
+	"string.h"
+	"stdint.h"
+	"plugin.h"
+	"vector"
+	"windows.h"
+	"thread"
+
+1574988688 e:\stm32_programer\data_programer\doc\plugin_hex_change\plugin.h
+	"stdint.h"
+

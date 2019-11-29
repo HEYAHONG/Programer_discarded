@@ -35,6 +35,12 @@
 
 #include "nettle/aes.h"
 
+//内存分配函数重定义
+#ifdef WIN32
+#define malloc(a) ((void *)VirtualAlloc(NULL,(a),MEM_COMMIT | MEM_RESERVE,PAGE_READWRITE))
+#define free(a)   VirtualFree((a),0,MEM_RELEASE)
+#endif 
+
 //包含插件定义头文件
 #include "plugin.h"
 
